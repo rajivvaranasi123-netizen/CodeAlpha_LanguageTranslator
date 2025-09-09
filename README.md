@@ -58,14 +58,6 @@ This project allows users to translate text between multiple languages using the
 - Recommended for personal and learning use only.  
 - For production or commercial applications, use an official API with authentication.
 
----
-
-## 📚 References
-
-- [Unofficial Google Translate API](https://translate.googleapis.com/)  
-- [Web Speech API - MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)  
-
----
 
 ## 📂 Repository Structure
 
