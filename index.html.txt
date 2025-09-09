@@ -1,0 +1,118 @@
+%%html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Translator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 10px;
+    }
+    select, button {
+      padding: 10px;
+      margin-top: 10px;
+      margin-right: 10px;
+    }
+    #output {
+      background: #f4f4f4;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 5px;
+    }
+    #controls {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🌍 Language Translator</h2>
+
+  <label>Enter Text:</label>
+  <textarea id="inputText" placeholder="Type something to translate..."></textarea>
+
+  <div>
+    <label>From:</label>
+    <select id="fromLang">
+      <option value="auto">Auto Detect</option>
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <option value="hi">Hindi</option>
+    </select>
+
+    <label>To:</label>
+    <select id="toLang">
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <option value="hi">Hindi</option>
+    </select>
+  </div>
+
+  <button onclick="translateText()">Translate</button>
+
+  <div id="output">
+    <strong>Translated Text:</strong>
+    <p id="translatedText"></p>
+
+    <div id="controls">
+      <button onclick="copyText()">📋 Copy</button>
+      <button onclick="speakText()">🔊 Speak</button>
+    </div>
+  </div>
+
+  <script>
+    async function translateText() {
+      const text = document.getElementById("inputText").value;
+      const from = document.getElementById("fromLang").value;
+      const to = document.getElementById("toLang").value;
+
+      if (!text.trim()) {
+        alert("Please enter text to translate.");
+        return;
+      }
+
+      const url = https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)};
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const translated = data[0].map(item => item[0]).join("");
+        document.getElementById("translatedText").innerText = translated;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("translatedText").innerText = "Translation failed.";
+      }
+    }
+
+    function copyText() {
+      const text = document.getElementById("translatedText").innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Text copied to clipboard!");
+      });
+    }
+
+    function speakText() {
+      const text = document.getElementById("translatedText").innerText;
+      const toLang = document.getElementById("toLang").value;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = toLang;
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+
+</body>
+</html>
